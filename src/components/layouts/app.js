@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import { Provider } from 'react-redux';
-import {retrievePersistedLastLogin} from '../support/sessionSupport';
-import {storeInstance} from '../support/reducerSupport';
-import { MASTER_LOGIN_USER } from '../redux/actions/types';
-import Alerts from './layouts/alerts';
-import Landing from './pages/landing';
-import Missing from './pages/missing';
-import Footer from './layouts/footer';
-import TopNavBar from './navigation/topNavBar';
-import AppStatusModal from './layouts/appStatusModal';
+import {retrievePersistedLastLogin} from '../../support/sessionSupport';
+import {storeInstance} from '../../support/reducerSupport';
+import { MASTER_LOGIN_USER } from '../../redux/actions/types';
+import Alerts from '../includes/alerts';
+import Landing from '../pages/landing';
+import Missing from '../pages/missing';
+import Footer from '../includes/footer';
+import TopNavBar from '../navigation/topNavBar';
+import AppStatusModal from '../includes/appStatusModal';
 
 
 export class App extends Component {
