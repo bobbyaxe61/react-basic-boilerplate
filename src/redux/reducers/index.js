@@ -1,7 +1,9 @@
 import {combineReducers} from 'redux';
-import masterAuthReducer from './masterAuthReducer';
-import masterAlertReducer from './masterAlertReducer';
-import masterAppStatusReducer from './masterAppStatusReducer';
+import authorizationReducer from './authorizationReducer';
+import alertReducer from './alertReducer';
+import applicationStatusReducer from './applicationStatusReducer';
 export default combineReducers({
-    master:combineReducers({auth:masterAuthReducer,alert:masterAlertReducer,appStatus:masterAppStatusReducer}),
+    authorization: authorizationReducer,
+    alert: alertReducer,
+    applicationStatus: applicationStatusReducer,
 });

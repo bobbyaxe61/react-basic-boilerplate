@@ -7,7 +7,7 @@ export class TopNavBar extends Component {
     render() {
         return (
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-                <Link to="/" className="navbar-brand">
+                <Link to="/" className="navbar-brand pl-3">
                     <img src={NAV_BAR_LOGO_ONE} width={30} height={30} className="d-inline-block align-top rounded" alt="App Logo" loading="lazy" />
                     &nbsp;{process.env.REACT_APP_NAME}
                 </Link>

@@ -42,7 +42,8 @@ export const updatePersistedLastLogin = (id, payLoad) => {
             ...user.loginDetails.data,
             data:{
               ...user.loginDetails.data.data,
-              token:payLoad.data.data.token
+              token:payLoad.data.data.token,
+              tokenExpiry:payLoad.data.data.tokenExpiry
             }
           }
         }
@@ -81,10 +82,15 @@ export const destroyLastLogin = (id) => {
 /**
  * Record and store request retires per user
  * @param {string} id 
- * @param {integer} maxRetries 
+ * @param {integer} maxRetries min:1
  */
 export const retryAgain = (id, maxRetries) => {
   let user = brain.get(id);
+
+  // Check if max retries is less than 1, if so return 1
+  if (typeof maxRetries !== 'number'){
+    maxRetries = 1;
+  }
 
   // if no user record, create a user record and allow retry
   if (!user) {
@@ -93,8 +99,8 @@ export const retryAgain = (id, maxRetries) => {
   }
 
   // if user retries exceeds the limit stated, clean user retry count and refuse retry
-  if (user.retries && user.retries > maxRetries) {
-    brain.replace(id,{...user,retries:0})
+  if (user.retries && user.retries >= maxRetries) {
+    brain.replace(id,{...user,retries:1})
     return false;
   }
 
@@ -103,4 +109,7 @@ export const retryAgain = (id, maxRetries) => {
     brain.replace(id,{...user,retries:user.retries+1})
     return true;
   }
+
+  // if no conditions are met return false
+  return false;
 }

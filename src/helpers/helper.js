@@ -357,7 +357,101 @@ const isBoolean = (value) => {
     return false
 }
 
+/**
+ * Convert a form input file to base64
+ * @param {file Object} file eg: e.target.files[0]
+ * @param {function} callback 
+ * @return {string}
+ */
+const inputFileToBase64 = (file, callback) => {
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+        callback(reader.result);
+    };
+};
+
+/**
+ * Return the file name form a file path
+ * @param {string} path 
+ * @return {string}
+ */
+const fileNameFromPath = (path) => {
+    return path.split('\\').pop();
+}
+
+/**
+ * Keys an array of objects by the given key
+ * If multiple items have the same key, only the last one will appear
+ * @param {array} arrayOfObjects 
+ * @param {string} key 
+ * @return {object}
+ */
+const keyBy = (arrayOfObjects,key) => {
+    let bag = {};
+
+    if (!isEmpty(arrayOfObjects)){
+        arrayOfObjects.map((item,index)=>{
+            bag[item[key]]={...item,index:index};
+            return true;
+        });
+        return bag;
+    }
+
+    return false;
+}
+
+/**
+ * Access an uncertain object and return a replacement if accessor fails
+ * @param {object} object 
+ * @param {string} accessors eg:'fish.food.type'
+ * @param {*} replacement 
+ * @return {*}
+ */
+const tryOrReplace = (object, accessors, replacement=false) => {
+    try {
+
+        accessors = accessors.split('.');
+        for (const key of accessors) {
+            object = object[key];
+        }
+        return object;
+
+    } catch (err){
+        return replacement;
+    }
+}
+
+/**
+ * List and return all numeric numbers between given numbers
+ * @param {integer} startAt 
+ * @param {integer} endAt max:999
+ * @param {integer} step min:1
+ * @return {boolean|array}
+ */
+const numericRange = (startAt, endAt, step=1) => {
+    if (startAt > endAt || endAt > 999 || step < 1){return false;}
+    return Array(Math.ceil((endAt+1 - startAt) / step)).fill(startAt).map(
+      (x, y) => {return x + y * step;}
+    );
+}
+
+/**
+ * List and return all characters between given characters
+ * @param {string} startChar charset:UTF-8
+ * @param {string} endChar charset:UTF-8
+ * @return {boolean|string}
+ */
+const characterRange = (startChar, endChar) => {
+    startChar = startChar.charCodeAt(0);
+    endChar = endChar.charCodeAt(0);
+    let numberOfChar = endChar - startChar +1;
+
+    if (startChar > endChar || numberOfChar < 0 || numberOfChar > 65535){return false;}
+    return String.fromCharCode(...[...Array(numberOfChar).keys()].map(i => i + startChar));
+}
+
 export {isEmptyObject, isEmptyArray, ucfirst, randomDate, passwordStrengthMeter, isLetter, isLowerCase, isUpperCase, hasRepeatedLetters, isString,
     isEmptyString, isArray, isObject, isDefined, isEmpty, lcfirst, autoEllipses, isNumeric, isNumber, objectToFormData, isEnv, randomString,
-    isBoolean,
+    isBoolean, inputFileToBase64, fileNameFromPath, keyBy, tryOrReplace, numericRange, characterRange,
 };

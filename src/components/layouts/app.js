@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import { Provider } from 'react-redux';
-import {retrievePersistedLastLogin} from '../../support/sessionSupport';
 import {storeInstance} from '../../support/reducerSupport';
-import { MASTER_LOGIN_USER } from '../../redux/actions/types';
+import {retrievePersistedLastLogin} from '../../support/sessionSupport';
+import { AUTH_LOGIN_USER } from '../../redux/actions/types';
 import Alerts from '../includes/alerts';
 import Landing from '../pages/landing';
 import Missing from '../pages/missing';
 import Footer from '../includes/footer';
 import TopNavBar from '../navigation/topNavBar';
-import AppStatusModal from '../includes/appStatusModal';
+import ApplicationStatusModal from '../modals/applicationStatusModal';
 
 
 export class App extends Component {
@@ -18,10 +18,10 @@ export class App extends Component {
     super();
 
     // Get last login details, if any re-login user
-    let user = retrievePersistedLastLogin('master_session');
+    let user = retrievePersistedLastLogin('session');
     if (user) {
       storeInstance().dispatch((dispatch)=>{
-          dispatch({type: MASTER_LOGIN_USER, payLoad: user.loginDetails});
+        dispatch({type: AUTH_LOGIN_USER, payLoad: user.loginDetails});
       });
     }
   }
@@ -32,7 +32,7 @@ export class App extends Component {
         <Router>
           <Alerts />
           <TopNavBar />
-          <AppStatusModal />
+          <ApplicationStatusModal />
           <Switch>
             {/* Landing page*/}
             <Route exact path="/" component={Landing} />
