@@ -19,11 +19,11 @@ const applicationTree = () => {
  * @param {void}
  * @return {object|boolean}
  */
-const getUserDetails = (application) => {
+const getUserDetails = () => {
     const tree = applicationTree();
 
-    if (application === 'master' && !isEmptyObject(tree.master.auth)){
-        return tree.master.auth
+    if (!isEmptyObject(tree.authorization)){
+        return tree.authorization
     }
 
     return false;

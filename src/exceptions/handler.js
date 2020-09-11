@@ -1,11 +1,11 @@
 import { setMultiAlertAction, setAlertAction } from '../redux/actions/masterAlertActions';
-import { isEmptyObject } from '../helpers/helper';
+import { isEmptyObject, randomString, characterRange, isEnv } from '../helpers/helper';
 import { storeInstance } from '../support/reducerSupport';
 
 const handler = (errorObject) => {
 
     if (errorObject.response) {
-        
+
         let errors = errorObject.response.data.errors;
 
         if (!isEmptyObject(errors)) {
@@ -13,34 +13,44 @@ const handler = (errorObject) => {
             // Map through errors
             let errorList = [];
             Object.keys(errors).map((item,key)=>{
-                return errorList.push({id:Math.random(), alertType:'danger', alertMessage:errors[item].toString()});
+                return errorList.push({id:randomString(8,characterRange('A','Z')), alertType:'danger', alertMessage:errors[item].toString()});
             })
 
             // Request made and server responded with an error
-            console.log('Error Response', errorObject.response.headers, errorObject.response.data, errorObject.response.status);
+            if(!isEnv('REACT_APP_ENV','production')){
+                console.log('Error Response', errorObject.response.headers, errorObject.response.data, errorObject.response.status);
+            }
 
             // Send found errors to alert
             storeInstance().dispatch(setMultiAlertAction(...errorList));
+
         } else {
             // Request made and server responded with an error
-            console.log('Error Response', errorObject.response);
+            if(!isEnv('REACT_APP_ENV','production')){
+                console.log('Error Response', errorObject.response);
+            }
 
             // Send found errors to alert
-            storeInstance().dispatch(setAlertAction({id:Math.random(), alertType:'warning', alertMessage:'Server is Conflicted'}));
+            storeInstance().dispatch(setAlertAction({id:randomString(8,characterRange('A','Z')), alertType:'warning', alertMessage:'Server is Conflicted'}));
         }
 
     } else if (errorObject.request) {
         // The request was made but no response was received
-        console.log('Unknown Response', errorObject.request);
+        if(!isEnv('REACT_APP_ENV','production')){
+            console.error('Unknown Response', errorObject.request);
+        }
 
         // Send found errors to alert
-        storeInstance().dispatch(setAlertAction({id:Math.random(), alertType:'danger', alertMessage:'Server is Unavailable'}));
+        storeInstance().dispatch(setAlertAction({id:randomString(8,characterRange('A','Z')), alertType:'danger', alertMessage:'Server is Unavailable'}));
+
     } else {
         // Something happened in setting up the request that triggered an Error
-        console.error('Unknown Error', errorObject.message);
+        if(!isEnv('REACT_APP_ENV','production')){
+            console.error('Unknown Error', errorObject.message);
+        }
 
         // Send found errors to alert
-        storeInstance().dispatch(setAlertAction({id:Math.random(), alertType:'info', alertMessage:'Application is Unavailable'}));
+        storeInstance().dispatch(setAlertAction({id:randomString(8,characterRange('A','Z')), alertType:'info', alertMessage:'Application is Unavailable'}));
     }
 } 
 
