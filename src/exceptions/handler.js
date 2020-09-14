@@ -1,4 +1,4 @@
-import { setMultiAlertAction, setAlertAction } from '../redux/actions/masterAlertActions';
+import { setMultiAlertAction, setAlertAction } from '../redux/actions/alertActions';
 import { isEmptyObject, randomString, characterRange, isEnv } from '../helpers/helper';
 import { storeInstance } from '../support/reducerSupport';
 
