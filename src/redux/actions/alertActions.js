@@ -23,7 +23,7 @@ export const setAlertAction = (payLoad) => {
 export const setMultiAlertAction = (payLoad) => {
     return (dispatch) => { dispatch({
             type: ALERT_SET_MULTI,
-            payLoad: {...payLoad}
+            payLoad: [...payLoad]
         });
     }
 }
