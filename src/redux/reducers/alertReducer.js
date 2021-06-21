@@ -16,7 +16,7 @@ export default function (state=initialState, action) {
         case ALERT_SET_MULTI:
             return {
                 ...state,
-                alerts:[action.payLoad],
+                alerts:[...state.alerts,...action.payLoad],
             }
 
         case ALERT_CLEAR:
