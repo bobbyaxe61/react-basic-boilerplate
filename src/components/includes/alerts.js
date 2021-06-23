@@ -1,31 +1,25 @@
-import React, { Component } from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import { connect } from 'react-redux';
 import {isEmptyArray} from '../../helpers/helper';
 import {setAlertAction, clearAlertAction} from '../../redux/actions/alertActions';
 
-export class Alerts extends Component {
-    state = {
-        alerts:[],
-    }
+const Alerts = (props) => {
+    const [alerts, setAlert] = useState([]);
+    const mounted = useRef();
 
-    componentDidUpdate(prevProps) {
+    useEffect(() => {
+        if(!mounted){
+            if(props.alerts !== props.alerts && !isEmptyArray(props.alerts)) {
+                setAlert([...alerts, ...props.alert]);
 
-        if (this.props.alerts !== prevProps.alerts && !isEmptyArray(this.props.alerts)) {
-
-            // Update current list of alerts in component state
-            this.setState({alerts:[...this.state.alerts,...this.props.alerts]});
-
-            // Clear list of alerts in reducer
-            this.props.clearAlertAction();
-
-            // re-render component
-            return true;
+                props.clearAlertAction();
+                return true;
+            }
         }
+    }, [props.alerts]);
 
-        return false;
-    }
 
-    showAlert = (alerts)=>{
+   const  showAlert = (alerts)=>{
         if (!isEmptyArray(alerts)) {
 
             // Display current alert messages in state
@@ -40,25 +34,34 @@ export class Alerts extends Component {
                 );
             });
         }
-    }
+    };
 
-    clearAlert = (id) => {
-        const unread = this.state.alerts.filter(alert => alert.id !== id);
-        this.setState({alerts:unread});
-    }
 
-    render() {
+ const clearAlert = (id) => {
+        const unread = alerts.filter((alert) => alert.id !== id);
+        setAlert(unread);
+    };
+
+    
 
         return (
             <div style={{position:'fixed', marginTop:70, zIndex:10, width:'40%', padding:'0px 60px', marginLeft:'60%'}}>
-                {this.showAlert(this.state.alerts)}
+                {showAlert(alerts)}
             </div>
         )
-    }
+    
+
+
 }
+
+    
+
+    
+
 
 const mapStateToProps = state => ({
     alerts: state.alert.alerts,
 });
+
 
 export default connect(mapStateToProps, {setAlertAction, clearAlertAction})(Alerts);
