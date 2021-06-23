@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import {NAV_BAR_LOGO_ONE} from '../images/images';
 
-export class TopNavBar extends Component {
+const TopNavBar = ()=>{
 
-    render() {
+    
         return (
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
                 <Link to="/" className="navbar-brand pl-3">
@@ -19,7 +19,7 @@ export class TopNavBar extends Component {
                 </div>
             </nav>
         )
-    }
+    
 }
 
 export default TopNavBar;

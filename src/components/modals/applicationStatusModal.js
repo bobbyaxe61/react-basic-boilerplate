@@ -1,35 +1,49 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import DotsAnimation from '../animations/dotsAnimation';
 import {PROCESSING_MUSIC} from '../music/music';
 
-export class AppStatusModal extends Component {
+const AppStatusModal = (props) => {
+    const [applicationStatus, setApplicationStatus] = useState([]);
+    const mounted = useRef ();
 
-    componentDidMount(){
-        this.initializeAudioPlayer();
-    }
+    useEffect(() => {
+        if(!mounted){
+            if(props.applicationStatus !== props.applicationStatus) {
+                setApplicationStatus([...applicationStatus, ...props.applicationStatus]);
 
-    componentDidUpdate(prevProps){
-        if (prevProps.applicationStatus !== this.props.applicationStatus) {
-            if (this.props.applicationStatus.isProcessing===true) {
-                this.toggleDisplayModal('show');
-                this.toggleProcessingMusic('start');
-            }
-
-            if (this.props.applicationStatus.isProcessing===false) {
-                this.toggleDisplayModal('hide');
-                this.toggleProcessingMusic('stop');
+                toggleDisplayModal('show');
+                toggleProcessingMusic('hide');
+                
             }
         }
-    }
+    }, [props.applicationStatus]);
 
-    initializeAudioPlayer = () => {
+
+
+    
+
+    // componentDidUpdate(prevProps){
+    //     if (prevProps.applicationStatus !== this.props.applicationStatus) {
+    //         if (this.props.applicationStatus.isProcessing===true) {
+    //             this.toggleDisplayModal('show');
+    //             this.toggleProcessingMusic('start');
+    //         }
+
+    //         if (this.props.applicationStatus.isProcessing===false) {
+    //             this.toggleDisplayModal('hide');
+    //             this.toggleProcessingMusic('stop');
+    //         }
+    //     }
+    // }
+
+    const initializeAudioPlayer = () => {
         this.audioPlayer = new Audio(PROCESSING_MUSIC);
         this.audioPlayer.volume = 0.3;
         this.audioPlayer.loop = true;
     }
 
-    toggleDisplayModal = (action) => {
+    const toggleDisplayModal = (action) => {
         const modal = document.getElementById('app-status-modal');
         const modalOpenButton = document.getElementById('app-status-modal-open');
         const modalCloseButton = document.getElementById('app-status-modal-close');
@@ -40,18 +54,18 @@ export class AppStatusModal extends Component {
         } else if (modal && modalOpenButton && !modal.classList.contains('show') && action==='show') {
             modalOpenButton.click();
         }
-    }
+    };
 
-    toggleProcessingMusic = (control) => {
+    const toggleProcessingMusic = (control) => {
 
         if (control === 'start') {
             this.audioPlayer.play().catch((err)=>{console.log(err);});
         } else {
             this.audioPlayer.pause();
         }
-    }
+    };
 
-    render() {
+    
         return (
             <div>
                 <button style={{display:'none'}} id="app-status-modal-open" type="button" data-toggle="modal" data-target="#app-status-modal">Launch</button>
@@ -68,7 +82,7 @@ export class AppStatusModal extends Component {
                 </div>
             </div>
         )
-    }
+    
 }
 
 const mapStateToProps = (state) => ({

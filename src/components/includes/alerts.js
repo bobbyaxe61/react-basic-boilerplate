@@ -63,5 +63,4 @@ const mapStateToProps = state => ({
     alerts: state.alert.alerts,
 });
 
-
 export default connect(mapStateToProps, {setAlertAction, clearAlertAction})(Alerts);
