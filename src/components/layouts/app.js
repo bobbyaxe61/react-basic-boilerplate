@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+
+import React, {useState, useEffect} from 'react';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import { Provider } from 'react-redux';
 import {storeInstance} from '../../support/reducerSupport';
@@ -12,10 +13,11 @@ import TopNavBar from '../navigation/topNavBar';
 import ApplicationStatusModal from '../modals/applicationStatusModal';
 
 
-export class App extends Component {
+ const App = () => {
 
-  constructor(){
-    super();
+  
+  
+    
 
     // Get last login details, if any re-login user
     let user = retrievePersistedLastLogin('session');
@@ -24,9 +26,6 @@ export class App extends Component {
         dispatch({type: AUTH_LOGIN_USER, payLoad: user.loginDetails});
       });
     }
-  }
-
-  render() {
     return (
       <Provider store={storeInstance()}>
         <Router>
@@ -44,7 +43,11 @@ export class App extends Component {
         </Router>
       </Provider>
     );
-  }
+  
+
+
+    
+  
 }
 
 export default App;

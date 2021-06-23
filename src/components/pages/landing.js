@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import DotsAnimation from '../animations/dotsAnimation';
 
-export class Landing extends Component {
-    render() {
+export const Landing = () => {
+    
         return (
             <div style={{height:'100vh'}}>
                 <div style={{textAlign:'center', marginTop:'20%'}}>
@@ -11,7 +11,7 @@ export class Landing extends Component {
                 </div>
             </div>
         )
-    }
+    
 }
 
 export default Landing;
